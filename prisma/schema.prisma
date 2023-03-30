@@ -12,147 +12,150 @@ datasource db {
 
 // Declaración de modelos
 model Products {
-  id        Int      @id @default(autoincrement())
-  invoiceId Int
-  palletId  Int
-  dispatchId Int
-  categoryId Int
+  id          Int                       @id @default(autoincrement())
+  invoiceId   Int
+  palletId    Int
+  dispatchId  Int
+  categoryId  Int
   containerId Int
-  name      String
-  price     Float
-  inventory Int
-  weight    Float
-  type     Int
-  pallet    Pallets  @relation(fields: [palletId], references: [id])
-  invoice  Invoices @relation(fields: [invoiceId], references: [id]) 
+  name        String
+  price       Float
+  inventory   Int
+  weight      Float
+  type        Int
+  pallet      Pallets ?  @relation(fields: [palletId], references: [id])
+  invoice     Invoices ?                  @relation(fields: [invoiceId], references: [id])
   locations   ProductsLocationHistory[]
-  category ProductsCategories  @relation(fields: [categoryId], references: [id])
-  dispatches Dispatches @relation(fields: [dispatchId], references: [id])
-  containers Containers @relation(fields: [containerId], references: [id])
+  category    ProductsCategories ?        @relation(fields: [categoryId], references: [id])
+  dispatches  Dispatches  ?              @relation(fields: [dispatchId], references: [id])
+  containers  Containers ?               @relation(fields: [containerId], references: [id])
 }
 
 model Invoices {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
-  customerId  Int
-  recieverId  Int
-  employeeId  Int
-  totalWeight Float
-  totalAmount Float
-  discount   Float
+  id             Int        @id @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime?  @updatedAt
+  customerId     Int
+  recieverId     Int
+  employeeId     Int
+  totalWeight    Float
+  totalAmount    Float
+  discount       Float
   deliveryAmount Float
-  products    Products[] 
-  employee    Employees  @relation(fields: [employeeId], references: [id])
-  customer    Customers  @relation(fields: [customerId], references: [id])
-  reciever    Recievers  @relation(fields: [recieverId], references: [id])
-  
+  products       Products[]
+  employee       Employees  @relation(fields: [employeeId], references: [id])
+  customer       Customers  @relation(fields: [customerId], references: [id])
+  reciever       Recievers  @relation(fields: [recieverId], references: [id])
 }
 
 model ProductsCategories {
-  id        Int        @id @default(autoincrement())
-  name      String
-  products  Products[]
+  id       Int        @id @default(autoincrement())
+  name     String
+  products Products[]
 }
-
 
 model ProductsLocationHistory {
-  id         Int         @id @default(autoincrement())
-  location   String
-  date       DateTime
-  product    Products     @relation(fields: [productId], references: [id])
-  productId  Int
+  id        Int      @id @default(autoincrement())
+  location  String
+  date      DateTime
+  product   Products @relation(fields: [productId], references: [id])
+  productId Int
 }
 
-
-
-
 model Employees {
-  id       Int      @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
   name     String
-  email    String @unique
-  address  String 
-  phone    String 
+  email    String     @unique
+  address  String
+  phone    String
   mobile   String
   invoices Invoices[]
 }
 
 model Customers {
-  id        Int      @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  license      String
-  passport String
-  email     String @unique
+  id        Int         @id @default(autoincrement())
+  firstName String
+  lastName  String
+  license   String
+  passport  String
+  email     String      @unique
   address   String
   countryId Int
   stateId   Int
   cityId    Int
   phone     String
-  mobile    String 
+  mobile    String @unique
   invoices  Invoices[]
+  recievers Recievers[]
 }
 
 model States {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
   countryId Int
-  country   Countries @relation(fields: [countryId], references: [id])
+  country   Countries   @relation(fields: [countryId], references: [id])
   cities    Cities[]
-  
+  Recievers Recievers[]
 }
 
 model Cities {
-  id        Int      @id @default(autoincrement())
-  name      String
-  stateId   Int
+  id         Int         @id @default(autoincrement())
+  name       String
+  stateId    Int
   postalCode Int
-  state     States   @relation(fields: [stateId], references: [id])
+  state      States      @relation(fields: [stateId], references: [id])
+  Recievers  Recievers[]
 }
 
 model Countries {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
   states    States[]
+  Recievers Recievers[]
 }
 
 model Recievers {
-  id         Int      @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  ci String  @unique
-  passport String
-  email     String @unique
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  ci        String  @unique
+  passport  String?
+  email     String  @unique
   address   String
-  postalCode    String
-  phone     String
-  mobile    String
-  countryId Int
-  stateId   Int
-  cityId    Int
+  phone     String?
+  mobile    String @unique
   invoices   Invoices[]
+
+  customerId Int
+  customer   Customers  @relation(fields: [customerId], references: [id])
+  countryId Int?
+  country   Countries? @relation(fields: [countryId], references: [id])
+  stateId   Int?
+  state     States?    @relation(fields: [stateId], references: [id])
+  cityId    Int?
+  city      Cities?    @relation(fields: [cityId], references: [id])
+ 
 }
 
 model Pallets {
-  id         Int      @id @default(autoincrement())
-  name       String
+  id          Int        @id @default(autoincrement())
+  name        String
   description String
-  products   Products[]
+  products    Products[]
 }
 
 model Dispatches {
-  id         Int      @id @default(autoincrement())
-  name       String
+  id          Int        @id @default(autoincrement())
+  name        String
   description String
-  products   Products[]
+  products    Products[]
 }
 
 model Containers {
-  id         Int      @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
-  name       String
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  name        String
   description String
-  products   Products[]
+  products    Products[]
 }
-

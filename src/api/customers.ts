@@ -1,13 +1,23 @@
 import express from "express";
-import { PrismaClient, Prisma } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Prisma } from "@prisma/client";
+import prisma from "../lib/prisma";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
 	const customers = await prisma.customers.findMany({});
 	res.status(200).json(customers);
+});
+
+router.get("/findByMobile/:mobile", async (req, res) => {
+	console.log(req.params.mobile)
+	const { mobile } = req.params;
+	const customer = await prisma.customers.findUnique({
+		where: {
+			mobile: mobile,
+		},
+	});
+	res.status(200).json(customer);
 });
 
 router.post("/create", async (req, res) => {
@@ -18,7 +28,6 @@ router.post("/create", async (req, res) => {
 		passport,
 		email,
 		address,
-
 		countryId,
 		stateId,
 		cityId,
