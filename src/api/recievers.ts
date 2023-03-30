@@ -59,6 +59,7 @@ router.get("/getRecieversByCustomerId/:id", async (req, res) => {
 		where: {
 			customerId: parseInt(req.params.id),
 		},
+
 		include: {
 			state: true,
 			city: true,
