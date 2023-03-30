@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/findByMobile/:mobile", async (req, res) => {
-	console.log(req.params.mobile);
 	const { mobile } = req.params;
 	const customer = await prisma.customers.findUnique({
 		where: {

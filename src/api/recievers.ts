@@ -54,7 +54,7 @@ router.post("/create", async (req, res) => {
 	}
 });
 
-router.get("/getRecieversByCustomerId/:id", async (req, res) => {
+router.get("/findByCustomerId/:id", async (req, res) => {
 	const recieversByCustomerId = await prisma.recievers.findMany({
 		where: {
 			customerId: parseInt(req.params.id),
@@ -68,7 +68,7 @@ router.get("/getRecieversByCustomerId/:id", async (req, res) => {
 	res.status(200).json(recieversByCustomerId);
 });
 
-router.get("/findRecieverByName/:searchParam", async (req, res) => {
+router.get("/findByName/:searchParam", async (req, res) => {
 	const recieverByName = await prisma.recievers.findMany({
 		where: {
 			firstName: {
