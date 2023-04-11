@@ -1,5 +1,4 @@
 import express from "express";
-import { Prisma } from "@prisma/client";
 import prisma from "../lib/prisma";
 
 const router = express.Router();
@@ -28,6 +27,7 @@ router.post("/create", async (req, res) => {
 		countryId,
 		stateId,
 		cityId,
+		agencyId,
 	} = req.body;
 	try {
 		const result = await prisma.recievers.create({
@@ -44,13 +44,12 @@ router.post("/create", async (req, res) => {
 				customerId,
 				stateId,
 				cityId,
+				agencyId,
 			},
 		});
 		res.status(200).json(result);
 	} catch (e) {
-		console.log(e);
-
-		res.status(400).json(e);
+		res.json({ error: `Error Creating a Reciever`,e });
 	}
 });
 
@@ -79,8 +78,28 @@ router.get("/findByName/:searchParam", async (req, res) => {
 		include: {
 			state: true,
 			city: true,
+			customer:true
 		},
 	});
 	res.status(200).json(recieverByName);
 });
+
+router.get("/findByMobile/:mobile", async (req, res) => {
+	const { mobile } = req.params;
+	try {
+		const reciever = await prisma.recievers.findUnique({
+			where: {
+				mobile: String(mobile),
+			},
+			include: {
+				state: true,
+				city: true,
+			},
+		});
+		res.status(200).json(reciever);
+	} catch (error) {
+		res.json({ error: `Reciever with ${mobile} number does not exist in the database` });
+	}
+});
+
 export default router;
