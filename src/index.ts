@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
-import api from "./api";
-import router from "./api/index";
-const app = express();
+import routerV1 from "./api/v1/index";
 
+
+const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(router);
-app.use("/api/v1", api);
 
-app.listen(3001, () => console.log("🚀 Server ready at: http://localhost:3001"));
+const port = process.env.PORT || 3001;
+
+app.use("/api/v1", routerV1);
+
+app.listen(port, () => console.log(`🚀 Server ready at:${port}`));

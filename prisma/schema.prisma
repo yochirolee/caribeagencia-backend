@@ -51,6 +51,7 @@ model Invoices {
   employee       Employees  @relation(fields: [employeeId], references: [id])
   customer       Customers  @relation(fields: [customerId], references: [id])
   reciever       Recievers  @relation(fields: [recieverId], references: [id])
+  
 }
 
 model ProductsCategories {
@@ -96,6 +97,7 @@ model Customers {
   recievers Recievers[]
   agencyId  Int
   agency    Agencies    @relation(fields: [agencyId], references: [id])
+  @@index(fields: [firstName,lastName,email,mobile])
 }
 
 model States {
@@ -151,7 +153,7 @@ model Pallets {
   name        String
   description String
   products    Products[]
-}
+} 
 
 model Agencies {
   id          Int         @id @default(autoincrement())
