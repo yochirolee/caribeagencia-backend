@@ -23,7 +23,6 @@ export const getCustomerById = async (req: express.Request, res: express.Respons
 };
 
 export const searchCustomers = async (req: express.Request, res: express.Response) => {
-	console.log(req.params);
 	const { search } = req.params;
 	if (!search) res.status(400).json({ message: "Search Criteria is required" });
 	try {

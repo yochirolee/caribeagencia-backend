@@ -1,4 +1,5 @@
 import prisma from "../../../lib/prisma";
+import { ICustomer } from "../Interfaces/ICustomer";
 
 const getAllCustomers = async () => {
 	const result = await prisma.customers.findMany();
@@ -46,7 +47,7 @@ const searchCustomers = async (search: string) => {
 	return result;
 };
 
-const createCustomer = async (data: any) => {
+const createCustomer = async (data: ICustomer) => {
 	const result = await prisma.customers.create({ data });
 	return result;
 };

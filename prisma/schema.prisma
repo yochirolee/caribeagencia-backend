@@ -114,8 +114,9 @@ model Cities {
   name       String
   stateId    Int
   postalCode Int
-  state      States      @relation(fields: [stateId], references: [id])
+  state      States      @relation(fields: [stateId], references: [id], onDelete: Cascade)
   Recievers  Recievers[]
+
 }
 
 model Countries {

@@ -8,7 +8,7 @@ export interface ICustomer {
 	countryId: number;
 	stateId: number;
 	cityId: number;
-	phone: number;
-	mobile: number;
+	phone: string;
+	mobile: string;
 	agencyId: number;
 }
