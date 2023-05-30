@@ -51,11 +51,26 @@ const createCustomer = async (data: ICustomer) => {
 	const result = await prisma.customers.create({ data });
 	return result;
 };
+
+const deleteCustomer = async (id: number) => {
+	try {
+		const result = await prisma.customers.delete({
+			where: {
+				id: id,
+			},
+		});
+		return result;
+	} catch (e) {
+		console.log(e);
+		throw new Error;
+	}
+};
 module.exports = {
 	getAllCustomers,
 	getCustomerById,
 	searchCustomers,
 	createCustomer,
+	deleteCustomer,
 };
 
 // Compare this snippet from src\api\v1\Services\CustomersServices.ts:
