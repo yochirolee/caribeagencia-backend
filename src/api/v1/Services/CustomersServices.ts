@@ -8,6 +8,9 @@ const getAllCustomers = async () => {
 			include: {
 				recievers: true,
 				invoices: true,
+				agency: true,
+				state: true,
+				city: true,
 			},
 		});
 		return result;
