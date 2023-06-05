@@ -85,7 +85,7 @@ model Customers {
   firstName String
   lastName  String
   license   String
-  passport  String      @unique
+  passport  String?     @unique
   email     String      @unique
   address   String
   countryId Int
