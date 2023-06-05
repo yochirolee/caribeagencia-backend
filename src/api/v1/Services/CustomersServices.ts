@@ -1,55 +1,99 @@
 import prisma from "../../../lib/prisma";
+import { Prisma } from "@prisma/client";
 import { ICustomer } from "../Interfaces/ICustomer";
 
 const getAllCustomers = async () => {
-	const result = await prisma.customers.findMany();
-	return result;
+	try {
+		const result = await prisma.customers.findMany({
+			include: {
+				recievers: true,
+				invoices: true,
+				agency: { select: { name: true } },
+				state: { select: { name: true } },
+				city: { select: { name: true } },
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const getCustomerById = async (id: number) => {
-	const result = await prisma.customers.findUnique({
-		where: {
-			id: id,
-		},
-	});
-	return result;
+	try {
+		const result = await prisma.customers.findUnique({
+			where: {
+				id: id,
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const searchCustomers = async (search: string) => {
-	const result = await prisma.customers.findMany({
-		where: {
-			OR: [
-				{
-					firstName: {
-						contains: search,
-						mode: "insensitive",
+	try {
+		const result = await prisma.customers.findMany({
+			where: {
+				OR: [
+					{
+						firstName: {
+							contains: search,
+							mode: "insensitive",
+						},
 					},
-				},
-				{
-					email: {
-						contains: search,
-						mode: "insensitive",
+					{
+						email: {
+							contains: search,
+							mode: "insensitive",
+						},
 					},
-				},
-				{
-					mobile: {
-						contains: search,
-						mode: "insensitive",
+					{
+						mobile: {
+							contains: search,
+							mode: "insensitive",
+						},
 					},
-				},
-			],
-		},
-		include: {
-			recievers: true,
-			invoices: true,
-		},
-	});
-	return result;
+				],
+			},
+			include: {
+				recievers: true,
+				invoices: true,
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const createCustomer = async (data: ICustomer) => {
-	const result = await prisma.customers.create({ data });
-	return result;
+	try {
+		const result = await prisma.customers.create({ data });
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
+};
+
+const createManyCustomers = async (data: ICustomer[]) => {
+	try {
+		const result = await prisma.customers.createMany({ data });
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const deleteCustomer = async (id: number) => {
@@ -61,8 +105,9 @@ const deleteCustomer = async (id: number) => {
 		});
 		return result;
 	} catch (e) {
-		console.log(e);
-		throw new Error;
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
 	}
 };
 module.exports = {
@@ -71,6 +116,7 @@ module.exports = {
 	searchCustomers,
 	createCustomer,
 	deleteCustomer,
+	createManyCustomers,
 };
 
 // Compare this snippet from src\api\v1\Services\CustomersServices.ts:

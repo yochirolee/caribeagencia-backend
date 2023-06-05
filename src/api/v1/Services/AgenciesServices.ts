@@ -1,39 +1,63 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../../../lib/prisma";
-import { IAgency } from "../Interfaces/IAgency";
 
 const getAllAgencies = async () => {
-	const result = await prisma.agencies.findMany();
-	return result;
+	try {
+		const result = await prisma.agencies.findMany();
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const getByAgencyId = async (id: number) => {
-	const result = await prisma.agencies.findUnique({
-		where: {
-			id: id,
-		},
-	});
-	return result;
+	try {
+		const result = await prisma.agencies.findUnique({
+			where: {
+				id: id,
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const searchAgency = async (search: string) => {
-	const result = await prisma.agencies.findMany({
-		where: {
-			OR: [
-				{
-					name: {
-						contains: search,
-						mode: "insensitive",
+	try {
+		const result = await prisma.agencies.findMany({
+			where: {
+				OR: [
+					{
+						name: {
+							contains: search,
+							mode: "insensitive",
+						},
 					},
-				},
-			],
-		},
-	});
-	return result;
+				],
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const createAgency = async (data: any) => {
-	const result = await prisma.agencies.create({ data });
-	return result;
+	try {
+		const result = await prisma.agencies.create({ data });
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
+	}
 };
 
 const updateAgency = async (id: number, data: any) => {
@@ -46,7 +70,9 @@ const updateAgency = async (id: number, data: any) => {
 		});
 		return result;
 	} catch (e) {
-		console.log(e);
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
 	}
 };
 
@@ -59,7 +85,9 @@ const deleteAgency = async (id: number) => {
 		});
 		return result;
 	} catch (e) {
-		console.log(e);
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+		}
+		throw e;
 	}
 };
 

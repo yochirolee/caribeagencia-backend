@@ -85,7 +85,7 @@ model Customers {
   firstName String
   lastName  String
   license   String
-  passport  String
+  passport  String      @unique
   email     String      @unique
   address   String
   countryId Int
@@ -97,6 +97,8 @@ model Customers {
   recievers Recievers[]
   agencyId  Int
   agency    Agencies    @relation(fields: [agencyId], references: [id])
+  state    States      @relation(fields: [stateId], references: [id])
+  city     Cities      @relation(fields: [cityId], references: [id])
   @@index(fields: [firstName,lastName,email,mobile])
 }
 
@@ -107,6 +109,7 @@ model States {
   country   Countries   @relation(fields: [countryId], references: [id])
   cities    Cities[]
   Recievers Recievers[]
+  Customers Customers[]
 }
 
 model Cities {
@@ -116,6 +119,7 @@ model Cities {
   postalCode Int
   state      States      @relation(fields: [stateId], references: [id], onDelete: Cascade)
   Recievers  Recievers[]
+  Customers  Customers[]
 
 }
 
@@ -164,6 +168,7 @@ model Agencies {
   description String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
+  phone       String?
   employees   Employees[]
   invoices    Invoices[]
   customers   Customers[]

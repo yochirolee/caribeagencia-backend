@@ -35,6 +35,7 @@ export const searchCustomers = async (req: express.Request, res: express.Respons
 };
 
 export const createCustomer = async (req: express.Request, res: express.Response) => {
+	console.log(req.body);
 	const {
 		firstName,
 		lastName,
@@ -79,8 +80,19 @@ export const createCustomer = async (req: express.Request, res: express.Response
 			});
 			res.status(200).json(result);
 		} catch (e) {
-			console.log(e, "error");
-			res.status(401).json(e);
+			res.status(400).json(e);
+		}
+};
+
+export const createManyCustomers = async (req: express.Request, res: express.Response) => {
+	const { customers } = req.body;
+	if (!customers) res.status(400).json({ message: "Customers are required" });
+	else
+		try {
+			const result = await CustomersServices.createManyCustomers(customers);
+			res.status(200).json(result);
+		} catch (e) {
+			res.status(400).json(e);
 		}
 };
 

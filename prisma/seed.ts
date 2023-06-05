@@ -2,6 +2,16 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 async function main() {
+	const country = await prisma.countries.upsert({
+		where: { id: 1 },
+		update: {},
+		create: {
+			id: 1,
+			name: "Cuba",
+		},
+	});
+
+
 	const provincias = await prisma.states.upsert({
 		where: { id: 1 },
 		update: {},
