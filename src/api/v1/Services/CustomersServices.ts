@@ -9,8 +9,6 @@ const getAllCustomers = async () => {
 				recievers: true,
 				invoices: true,
 				agency: true,
-				state: true,
-				city: true,
 			},
 		});
 		return result;
