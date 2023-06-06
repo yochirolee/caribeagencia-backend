@@ -4,13 +4,7 @@ import { ICustomer } from "../Interfaces/ICustomer";
 
 const getAllCustomers = async () => {
 	try {
-		const result = await prisma.customers.findMany({
-			include: {
-				recievers: true,
-				invoices: true,
-				agency: true,
-			},
-		});
+		const result = await prisma.customers.findMany({});
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -24,6 +18,11 @@ const getCustomerById = async (id: number) => {
 		const result = await prisma.customers.findUnique({
 			where: {
 				id: id,
+			},
+			include: {
+				recievers: true,
+				invoices: true,
+				agency: true,
 			},
 		});
 		return result;
@@ -62,6 +61,8 @@ const searchCustomers = async (search: string) => {
 			include: {
 				recievers: true,
 				invoices: true,
+				agency: true,
+				
 			},
 		});
 		return result;
