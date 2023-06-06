@@ -15,16 +15,16 @@ datasource db {
 model Products {
   id          Int                       @id @default(autoincrement())
   hbl         String                    @unique
-  invoiceId   Int
-  palletId    Int
-  dispatchId  Int
-  categoryId  Int
-  containerId Int
+  invoiceId   Int 
+  palletId    Int ?
+  dispatchId  Int ?
+  categoryId  Int ?
+  containerId Int ?
   name        String
-  price       Float
-  inventory   Int
-  weight      Float
-  type        Int
+  price       Float @default(0)
+  inventory   Int @default(0)
+  weight      Float @default(0)
+  type        Int @default(0)
   pallet      Pallets?                  @relation(fields: [palletId], references: [id])
   invoice     Invoices?                 @relation(fields: [invoiceId], references: [id])
   location    ProductsLocationHistory[]
@@ -35,7 +35,7 @@ model Products {
 
 model Invoices {
   id             Int        @id @default(autoincrement())
-  invoiceNumber  String     @unique
+  invoiceNumber  Int        @unique  @default(autoincrement())
   createdAt      DateTime   @default(now())
   updatedAt      DateTime?  @updatedAt
   customerId     Int
@@ -163,9 +163,9 @@ model Pallets {
 model Agencies {
   id          Int         @id @default(autoincrement())
   name        String
-  address     String
-  owner       String
-  description String
+  address     String  ?
+  owner       String  ?
+  description String  ?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
   phone       String?
