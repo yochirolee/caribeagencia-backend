@@ -103,6 +103,28 @@ model Customers {
   @@index(fields: [firstName,lastName,email,mobile])
 }
 
+model Recievers {
+  id         Int        @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  ci         String     @unique
+  passport   String?
+  email      String     @unique
+  address    String
+  phone      String?
+  mobile     String     @unique
+  customers Customers[]
+  invoices   Invoices[]
+  agencyId   Int
+  agency     Agencies   @relation(fields: [agencyId], references: [id])
+  countryId  Int?
+  country    Countries? @relation(fields: [countryId], references: [id])
+  stateId    Int?
+  state      States?    @relation(fields: [stateId], references: [id])
+  cityId     Int?
+  city       Cities?    @relation(fields: [cityId], references: [id])
+}
+
 model States {
   id        Int         @id @default(autoincrement())
   name      String
@@ -131,28 +153,7 @@ model Countries {
   Recievers Recievers[]
 }
 
-model Recievers {
-  id         Int        @id @default(autoincrement())
-  firstName  String
-  lastName   String
-  ci         String     @unique
-  passport   String?
-  email      String     @unique
-  address    String
-  phone      String?
-  mobile     String     @unique
-  invoices   Invoices[]
-  agencyId   Int
-  agency     Agencies   @relation(fields: [agencyId], references: [id])
-  customerId Int
-  customer   Customers  @relation(fields: [customerId], references: [id])
-  countryId  Int?
-  country    Countries? @relation(fields: [countryId], references: [id])
-  stateId    Int?
-  state      States?    @relation(fields: [stateId], references: [id])
-  cityId     Int?
-  city       Cities?    @relation(fields: [cityId], references: [id])
-}
+
 
 model Pallets {
   id          Int        @id @default(autoincrement())
