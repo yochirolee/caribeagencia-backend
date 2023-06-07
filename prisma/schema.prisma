@@ -33,6 +33,7 @@ model Products {
   container   Containers?               @relation(fields: [containerId], references: [id])
 }
 
+
 model Invoices {
   id             Int        @id @default(autoincrement())
   invoiceNumber  Int        @unique  @default(autoincrement())

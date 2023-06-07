@@ -62,7 +62,6 @@ const searchCustomers = async (search: string) => {
 				recievers: true,
 				invoices: true,
 				agency: true,
-				
 			},
 		});
 		return result;
