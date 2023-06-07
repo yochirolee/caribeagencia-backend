@@ -35,6 +35,7 @@ const getCustomerById = async (id: number) => {
 
 const searchCustomers = async (search: string) => {
 	try {
+		
 		const result = await prisma.customers.findMany({
 			where: {
 				OR: [
