@@ -1,8 +1,8 @@
-export interface ICustomer {
-	id: number;
+export interface IReciever {
+    id: number;
 	firstName: string;
 	lastName: string;
-	license: string;
+	ci: string;
 	passport: string;
 	email: string;
 	address: string;

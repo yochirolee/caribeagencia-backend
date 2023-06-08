@@ -84,6 +84,20 @@ export const createCustomer = async (req: express.Request, res: express.Response
 		}
 };
 
+export const createCustomerAndReciever = async (req: express.Request, res: express.Response) => {
+	console.log(req.body);
+	const { customer, reciever } = req.body;
+	if (!customer || !reciever)
+		res.status(400).json({ message: "Customer and Reciever are required" });
+	else
+		try {
+			const result = await CustomersServices.createCustomerAndReciever(customer, reciever);
+			res.status(200).json(result);
+		} catch (e) {
+			res.status(400).json(e);
+		}
+};
+
 export const createManyCustomers = async (req: express.Request, res: express.Response) => {
 	const { customers } = req.body;
 	if (!customers) res.status(400).json({ message: "Customers are required" });
