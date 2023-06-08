@@ -96,7 +96,7 @@ const createCustomer = async (data: ICustomer) => {
 //create customer with reciever
 const createCustomerAndReciever = async (customer: ICustomer, reciever: IReciever) => {
 	try {
-		if (!customer || !reciever) throw new Error("Customer or Reciever is not defined");
+		/* 	if (!customer || !reciever) throw new Error("Customer or Reciever is not defined");
 
 		const customerResult = await prisma.customers.findUnique({
 			where: { mobile: customer.mobile },
@@ -163,8 +163,9 @@ const createCustomerAndReciever = async (customer: ICustomer, reciever: IRecieve
 					},
 				},
 			});
-			return result;
-		}
+			return result; 
+		}*/
+		return "hello";
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			throw e;
