@@ -18,6 +18,12 @@ const getByAgencyId = async (id: number) => {
 			where: {
 				id: id,
 			},
+			include: {
+				customers: true,
+				employees: true,
+				invoices: true,
+				recievers: true,
+			},
 		});
 		return result;
 	} catch (e) {
@@ -71,6 +77,7 @@ const updateAgency = async (id: number, data: any) => {
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
 		}
 		throw e;
 	}
@@ -86,6 +93,7 @@ const deleteAgency = async (id: number) => {
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
 		}
 		throw e;
 	}
