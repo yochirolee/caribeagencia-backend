@@ -12,7 +12,7 @@ export const getAllEmployees = async (req: express.Request, res: express.Respons
 
 export const getEmployeesByAgencyId = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
-	console.log(id,"agency id")
+	console.log(id, "agency id");
 	if (!id) res.status(400).json({ message: "Agency id is required" });
 	try {
 		const result = await EmployeesServices.getEmployeesByAgencyId(Number(id));
@@ -49,22 +49,8 @@ export const searchEmployees = async (req: express.Request, res: express.Respons
 
 export const createEmployee = async (req: express.Request, res: express.Response) => {
 	console.log(req.body);
-	const {
-		firstName,
-		lastName,
-		email,
-		address,
-		mobile,
-		agencyId,
-	} = req.body;
-	if (
-		!firstName ||
-		!lastName ||
-		!email ||
-		!address ||
-		!mobile ||
-		!agencyId
-	)
+	const { firstName, lastName, email, address, mobile, agencyId } = req.body;
+	if (!firstName || !lastName || !email || !address || !mobile || !agencyId)
 		res.status(400).json({ message: "All fields are required" });
 	else
 		try {
@@ -89,6 +75,28 @@ export const createManyEmployees = async (req: express.Request, res: express.Res
 		try {
 			const result = await EmployeesServices.createManyEmployees(Employees);
 			res.status(200).json(result);
+		} catch (e) {
+			res.status(400).json(e);
+		}
+};
+
+export const updateEmployee = async (req: express.Request, res: express.Response) => {
+	const { id } = req.params;
+	const { firstName, lastName, email, address, mobile, agencyId } = req.body;
+	if (!firstName || !lastName || !email || !address || !mobile || !agencyId)
+		res.status(400).json({ message: "All fields are required" });
+	else
+		try {
+			const result = await EmployeesServices.updateEmployee(Number(id), {
+				firstName,
+				lastName,
+				email,
+				address,
+				mobile,
+				agencyId,
+			});
+			if (!result) res.status(404).json({ message: `Employee with id ${id} not found ` });
+			else res.status(200).json(result);
 		} catch (e) {
 			res.status(400).json(e);
 		}
