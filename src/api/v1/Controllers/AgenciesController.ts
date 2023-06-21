@@ -35,16 +35,16 @@ export const searchAgency = async (req: express.Request, res: express.Response) 
 };
 
 export const createAgency = async (req: express.Request, res: express.Response) => {
-	const { name, address, owner, phone, description } = req.body;
+	const { name, address, email, owner, phone, description } = req.body;
 	console.log(req.body);
-	if (!name || !address || !owner || !description)
-		res.status(400).json({ message: "All fields are required" });
+	if (!name || !address || !owner) res.status(400).json({ message: "All fields are required" });
 	else
 		try {
 			const result = await AgenciesServices.createAgency({
 				name,
 				address,
 				owner,
+				email,
 				phone,
 				description,
 			});
@@ -57,10 +57,9 @@ export const createAgency = async (req: express.Request, res: express.Response) 
 
 export const updateAgency = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
-	const { name, address, owner, phone, description } = req.body;
+	const { name, address, email, owner, phone, description } = req.body;
 	if (!id) res.status(400).json({ message: "Agency id is required" });
-	if (!name || !address || !owner || !description)
-		res.status(400).json({ message: "All fields are required" });
+	if (!name || !address || !owner) res.status(400).json({ message: "All fields are required" });
 	else
 		try {
 			const result = await AgenciesServices.updateAgency(Number(id), {
@@ -68,6 +67,7 @@ export const updateAgency = async (req: express.Request, res: express.Response) 
 				address,
 				owner,
 				phone,
+				email,
 				description,
 			});
 			if (!result) res.status(404).json({ message: `Agency with id ${id} not found ` });

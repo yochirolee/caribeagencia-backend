@@ -168,6 +168,7 @@ model Agencies {
   address     String  ?
   owner       String  ?
   description String  ?
+  email       String  ?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
   phone       String?
