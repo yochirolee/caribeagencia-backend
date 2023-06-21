@@ -172,6 +172,7 @@ model Agencies {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
   phone       String?
+  
   employees   Employees[]
   invoices    Invoices[]
   customers   Customers[]
