@@ -71,7 +71,8 @@ model ProductsLocationHistory {
 
 model Employees {
   id       Int        @id @default(autoincrement())
-  name     String
+  firstName     String
+  lastName      String
   email    String     @unique
   address  String
   phone    String?
@@ -172,7 +173,7 @@ model Agencies {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime?   @updatedAt
   phone       String?
-  
+
   employees   Employees[]
   invoices    Invoices[]
   customers   Customers[]
