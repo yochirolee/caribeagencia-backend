@@ -82,6 +82,7 @@ export const createManyEmployees = async (req: express.Request, res: express.Res
 
 export const updateEmployee = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
+	console.log(id);
 	const { firstName, lastName, email, address, mobile, agencyId } = req.body;
 	if (!firstName || !lastName || !email || !address || !mobile || !agencyId)
 		res.status(400).json({ message: "All fields are required" });
@@ -95,6 +96,7 @@ export const updateEmployee = async (req: express.Request, res: express.Response
 				mobile,
 				agencyId,
 			});
+			console.log(result,"result")
 			if (!result) res.status(404).json({ message: `Employee with id ${id} not found ` });
 			else res.status(200).json(result);
 		} catch (e) {

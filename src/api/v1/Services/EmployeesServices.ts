@@ -89,6 +89,22 @@ const createEmployee = async (data: IEmployee) => {
 	}
 };
 
+const updateEmployee = async (id: number, data: IEmployee) => {
+	try {
+		const result = await prisma.employees.update({
+			where: {
+				id: id,
+			},
+			data: data,
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
+		}
+		throw e;
+	}
+};
 const deleteEmployee = async (id: number) => {
 	try {
 		const result = await prisma.employees.delete({
@@ -110,6 +126,7 @@ module.exports = {
 	createEmployee,
 	deleteEmployee,
 	getEmployeesByAgencyId,
+	updateEmployee,
 };
 
 // Compare this snippet from src\api\v1\Services\EmployeessServices.ts:
