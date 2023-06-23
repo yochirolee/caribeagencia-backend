@@ -23,15 +23,17 @@ export const getProductCategoryById = async (req: express.Request, res: express.
 };
 
 export const createProductCategory = async (req: express.Request, res: express.Response) => {
-	const { name, pricePeerPound, minWeight, maxWeight } = req.body;
+	const { agencyId, name, pricePeerPound, pricePeerPoundForSale, minWeight, maxWeight } = req.body;
 
 	console.log(req.body);
 	if (!name) res.status(400).json({ message: "Category name are required" });
 	else
 		try {
 			const result = await ProductsCategories.createProductCategory({
+				agencyId,
 				name,
 				pricePeerPound,
+				pricePeerPoundForSale,
 				minWeight,
 				maxWeight,
 			});
@@ -59,7 +61,7 @@ export const updateProductCategory = async (req: express.Request, res: express.R
 		}
 };
 
-export const deleteProductCategory= async (req: express.Request, res: express.Response) => {
+export const deleteProductCategory = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
 	if (!id) res.status(400).json({ message: "Category id is required" });
 	try {
