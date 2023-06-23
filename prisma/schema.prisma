@@ -59,12 +59,15 @@ model ProductsCategories {
   id                Int        @id @default(autoincrement())
   name              String
   pricePeerPound    Float      @default(0)
+  pricePeerPoundForSale Float  @default(0)
   pricePeerCubic    Float      @default(0)
   pricePeerUnit     Float      @default(0)
   pricePeerPallet   Float      @default(0)
   pricePeerContainer Float     @default(0)
   minWeight         Float      @default(0)
   maxWeight         Float      @default(0)
+  agencyId          Int
+  agency            Agencies   @relation(fields: [agencyId], references: [id])
   
 
   products Products[]
@@ -188,6 +191,7 @@ model Agencies {
   invoices    Invoices[]
   customers   Customers[]
   recievers   Recievers[]
+  categories  ProductsCategories[]
 }
 
 model Dispatches {
