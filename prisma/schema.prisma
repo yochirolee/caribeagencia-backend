@@ -66,6 +66,7 @@ model ProductsCategories {
   pricePeerContainer Float     @default(0)
   minWeight         Float      @default(0)
   maxWeight         Float      @default(0)
+  isSellByPounds      Boolean    @default(true)
   agencyId          Int
   agency            Agencies   @relation(fields: [agencyId], references: [id])
   
