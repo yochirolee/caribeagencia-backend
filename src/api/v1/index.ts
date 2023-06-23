@@ -15,6 +15,6 @@ router.use("/customers", CustomersRoutes);
 router.use("/agencies", AgenciesRoutes);
 router.use("/recievers", RecieversRoutes);
 router.use("/employees", EmployeesRoutes);
-router.use("/products/categories", ProductsCategoriesRoutes);
+router.use("/productsCategories", ProductsCategoriesRoutes);
 
 export default router;

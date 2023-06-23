@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 router.get("/", getAllProductsCategories);
 router.get("/:id", getProductCategoryById);
-router.get("/agency/:agencyId", getProductsCategoriesByAgencyId);
+router.get("/getByAgencyId/:agencyId", getProductsCategoriesByAgencyId);
 router.post("/create", createProductCategory);
 router.put("/update/:id", updateProductCategory);
 router.delete("/delete/:id", deleteProductCategory);
