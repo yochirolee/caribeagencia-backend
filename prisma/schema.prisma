@@ -56,8 +56,17 @@ model Invoices {
 }
 
 model ProductsCategories {
-  id       Int        @id @default(autoincrement())
-  name     String
+  id                Int        @id @default(autoincrement())
+  name              String
+  pricePeerPound    Float      @default(0)
+  pricePeerCubic    Float      @default(0)
+  pricePeerUnit     Float      @default(0)
+  pricePeerPallet   Float      @default(0)
+  pricePeerContainer Float     @default(0)
+  minWeight         Float      @default(0)
+  maxWeight         Float      @default(0)
+  
+
   products Products[]
 }
 
@@ -165,6 +174,7 @@ model Pallets {
 
 model Agencies {
   id          Int         @id @default(autoincrement())
+  parentId    Int?        @default(0)
   name        String
   address     String  ?
   owner       String  ?

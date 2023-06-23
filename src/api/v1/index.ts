@@ -1,5 +1,11 @@
 import express from "express";
-import { AgenciesRoutes, CustomersRoutes, EmployeesRoutes, RecieversRoutes } from "./Routes";
+import {
+	AgenciesRoutes,
+	CustomersRoutes,
+	EmployeesRoutes,
+	RecieversRoutes,
+	ProductsCategoriesRoutes,
+} from "./Routes";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -9,5 +15,6 @@ router.use("/customers", CustomersRoutes);
 router.use("/agencies", AgenciesRoutes);
 router.use("/recievers", RecieversRoutes);
 router.use("/employees", EmployeesRoutes);
+router.use("/products/categories", ProductsCategoriesRoutes);
 
 export default router;
