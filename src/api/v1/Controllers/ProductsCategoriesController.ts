@@ -22,11 +22,24 @@ export const getProductCategoryById = async (req: express.Request, res: express.
 	}
 };
 
+export const getProductsCategoriesByAgencyId = async (req: express.Request, res: express.Response) => {
+	const { agencyId } = req.params;
+	if (!agencyId) res.status(400).json({ message: "Agency id is required" });
+	try {
+		const result = await ProductsCategories.getProductsCategoriesByAgencyId(Number(agencyId));
+		if (!result) res.status(404).json({ message: `Category with id ${agencyId} not found ` });
+		else res.status(200).json(result);
+	} catch (e) {
+		res.status(400).json(e);
+	}
+};
+
+
 export const createProductCategory = async (req: express.Request, res: express.Response) => {
 	const { agencyId, name, pricePeerPound, pricePeerPoundForSale, minWeight, maxWeight } = req.body;
 
 	console.log(req.body);
-	if (!name || !agencyId) res.status(400).json({ message: "Category name are required" });
+	if (!name || !agencyId) res.status(400).json({ message: "All fields are required" });
 	else
 		try {
 			const result = await ProductsCategories.createProductCategory({
