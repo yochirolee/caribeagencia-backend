@@ -26,7 +26,7 @@ export const createProductCategory = async (req: express.Request, res: express.R
 	const { agencyId, name, pricePeerPound, pricePeerPoundForSale, minWeight, maxWeight } = req.body;
 
 	console.log(req.body);
-	if (!name) res.status(400).json({ message: "Category name are required" });
+	if (!name || !agencyId) res.status(400).json({ message: "Category name are required" });
 	else
 		try {
 			const result = await ProductsCategories.createProductCategory({
