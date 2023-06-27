@@ -1,5 +1,5 @@
 import express from "express";
-const ProductsCategories = require("../Services/ProductsCategoriesServices");
+const ProductsCategories = require("../db/ProductsCategoriesServices");
 
 export const getAllProductsCategories = async (req: express.Request, res: express.Response) => {
 	try {

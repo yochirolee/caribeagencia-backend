@@ -1,5 +1,5 @@
 import express from "express";
-const CustomersServices = require("../Services/CustomersServices");
+const CustomersServices = require("../db/CustomersServices");
 
 export const getAllCustomers = async (req: express.Request, res: express.Response) => {
 	try {

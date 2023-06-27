@@ -3,6 +3,7 @@ import CustomersRoutes from "./CustomersRoutes";
 import RecieversRoutes from "./RecieversRoutes";
 import EmployeesRoutes from "./EmployeesRoutes";
 import ProductsCategoriesRoutes from "./ProductsCategoriesRoutes";
+import ServicesRoutes from "./ServicesRoutes";
 
 export {
 	AgenciesRoutes,
@@ -10,4 +11,5 @@ export {
 	RecieversRoutes,
 	EmployeesRoutes,
 	ProductsCategoriesRoutes,
+	ServicesRoutes,
 };

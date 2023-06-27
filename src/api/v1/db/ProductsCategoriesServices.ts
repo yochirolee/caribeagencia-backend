@@ -29,7 +29,7 @@ const getByProductCategoryId = async (id: number) => {
 	}
 };
 
-const getProductsCategoriesByAgencyId = async (agencyId: number) => {
+/* const getProductsCategoriesByAgencyId = async (agencyId: number) => {
 	try {
 		const result = await prisma.productsCategories.findMany({
 			where: {
@@ -43,7 +43,7 @@ const getProductsCategoriesByAgencyId = async (agencyId: number) => {
 		}
 		throw e;
 	}
-};
+}; */
 
 const createProductCategory = async (data: any) => {
 	try {
@@ -93,7 +93,7 @@ const deleteProductCategory = async (id: number) => {
 module.exports = {
 	getAllProductsCategories,
 	getByProductCategoryId,
-    getProductsCategoriesByAgencyId,
+  //  getProductsCategoriesByAgencyId,
 	createProductCategory,
 	updateProductCategory,
 	deleteProductCategory,

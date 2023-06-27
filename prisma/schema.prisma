@@ -55,20 +55,7 @@ model Invoices {
   
 }
 
-model ProductsCategories {
-  id                Int        @id @default(autoincrement())
-  name              String
-  poundBuyPrice    Float      @default(0)
-  poundSalePrice   Float      @default(0)
-  unitBuyPrice      Float      @default(0)
-  unitSalePrice     Float      @default(0)
-  minWeight         Float      @default(0)
-  maxWeight         Float      @default(0)
-  isSellByPounds      Boolean    @default(true)
-  agencyId          Int
-  agency            Agencies   @relation(fields: [agencyId], references: [id])
-  products Products[]
-}
+
 
 model ProductsLocationHistory {
   id        Int      @id @default(autoincrement())
@@ -188,7 +175,45 @@ model Agencies {
   invoices    Invoices[]
   customers   Customers[]
   recievers   Recievers[]
-  categories  ProductsCategories[]
+  services    Services[]
+}
+
+model Services {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  providerName String
+  providerPhone       String
+  providerAddress     String
+  providerEmail      String
+  type        ServiceType @default(Maritimo)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  agencyId    Int
+  agency      Agencies   @relation(fields: [agencyId], references: [id])
+  ProductsCategories ProductsCategories[]
+}
+
+model ProductsCategories {
+  id                Int        @id @default(autoincrement())
+  name              String
+  poundBuyPrice    Float      @default(0)
+  poundSalePrice   Float      @default(0)
+  unitBuyPrice      Float      @default(0)
+  unitSalePrice     Float      @default(0)
+  minWeight         Float      @default(0)
+  maxWeight         Float      @default(0)
+  isSellByPounds      Boolean    @default(true)
+  serviceId        Int
+  service          Services   @relation(fields: [serviceId], references: [id])
+  products Products[]
+}
+
+enum ServiceType {
+  Aereo
+  Maritimo
+  Mulas
+  
 }
 
 model Dispatches {

@@ -5,6 +5,7 @@ import {
 	EmployeesRoutes,
 	RecieversRoutes,
 	ProductsCategoriesRoutes,
+	ServicesRoutes,
 } from "./Routes";
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/agencies", AgenciesRoutes);
 router.use("/recievers", RecieversRoutes);
 router.use("/employees", EmployeesRoutes);
 router.use("/productsCategories", ProductsCategoriesRoutes);
+router.use("/services", ServicesRoutes);
 
 export default router;

@@ -1,5 +1,5 @@
 import express from "express";
-const RecieversServices = require("../Services/RecieversServices");
+const RecieversServices = require("../db/RecieversServices");
 
 export const getAllRecievers = async (req: express.Request, res: express.Response) => {
 	try {
