@@ -58,19 +58,15 @@ model Invoices {
 model ProductsCategories {
   id                Int        @id @default(autoincrement())
   name              String
-  pricePeerPound    Float      @default(0)
-  pricePeerPoundForSale Float  @default(0)
-  pricePeerCubic    Float      @default(0)
-  pricePeerUnit     Float      @default(0)
-  pricePeerPallet   Float      @default(0)
-  pricePeerContainer Float     @default(0)
+  poundBuyPrice    Float      @default(0)
+  poundSalePrice   Float      @default(0)
+  unitBuyPrice      Float      @default(0)
+  unitSalePrice     Float      @default(0)
   minWeight         Float      @default(0)
   maxWeight         Float      @default(0)
   isSellByPounds      Boolean    @default(true)
   agencyId          Int
   agency            Agencies   @relation(fields: [agencyId], references: [id])
-  
-
   products Products[]
 }
 
