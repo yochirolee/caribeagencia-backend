@@ -22,7 +22,10 @@ export const getProductCategoryById = async (req: express.Request, res: express.
 	}
 };
 
-export const getProductsCategoriesByAgencyId = async (req: express.Request, res: express.Response) => {
+export const getProductsCategoriesByAgencyId = async (
+	req: express.Request,
+	res: express.Response,
+) => {
 	const { agencyId } = req.params;
 	if (!agencyId) res.status(400).json({ message: "Agency id is required" });
 	try {
@@ -34,9 +37,17 @@ export const getProductsCategoriesByAgencyId = async (req: express.Request, res:
 	}
 };
 
-
 export const createProductCategory = async (req: express.Request, res: express.Response) => {
-	const { agencyId, name, pricePeerPound, pricePeerPoundForSale, minWeight, maxWeight } = req.body;
+	const {
+		agencyId,
+		name,
+		unitSalePrice,
+		unitBuyPrice,
+		minWeight,
+		maxWeight,
+		poundSalePrice,
+		poundBuyPrice,
+	} = req.body;
 
 	console.log(req.body);
 	if (!name || !agencyId) res.status(400).json({ message: "All fields are required" });
@@ -45,10 +56,12 @@ export const createProductCategory = async (req: express.Request, res: express.R
 			const result = await ProductsCategories.createProductCategory({
 				agencyId,
 				name,
-				pricePeerPound,
-				pricePeerPoundForSale,
+				unitSalePrice,
+				unitBuyPrice,
 				minWeight,
 				maxWeight,
+				poundSalePrice,
+				poundBuyPrice,
 			});
 			res.status(200).json(result);
 		} catch (e) {
