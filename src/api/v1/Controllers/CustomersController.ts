@@ -1,9 +1,9 @@
 import express from "express";
-const CustomersServices = require("../db/CustomersServices");
+const db_customers = require("../database/db_customers");
 
 export const getAllCustomers = async (req: express.Request, res: express.Response) => {
 	try {
-		const result = await CustomersServices.getAllCustomers();
+		const result = await db_customers.getAllCustomers();
 		res.status(200).json(result);
 	} catch (e) {
 		res.status(400).json(e);
@@ -14,7 +14,7 @@ export const getCustomerById = async (req: express.Request, res: express.Respons
 	const { id } = req.params;
 	if (!id) res.status(400).json({ message: "Customer id is required" });
 	try {
-		const result = await CustomersServices.getCustomerById(Number(id));
+		const result = await db_customers.getCustomerById(Number(id));
 		if (!result) res.status(404).json({ message: `Customer with id ${id} not found ` });
 		else res.status(200).json(result);
 	} catch (e) {
@@ -26,7 +26,7 @@ export const searchCustomers = async (req: express.Request, res: express.Respons
 	const { search } = req.params;
 	if (!search) res.status(400).json({ message: "Search Criteria is required" });
 	try {
-		const result = await CustomersServices.searchCustomers(search);
+		const result = await db_customers.searchCustomers(search);
 		if (!result) res.status(404).json({ message: `Customer  ${search} not found ` });
 		else res.status(200).json(result);
 	} catch (e) {
@@ -64,7 +64,7 @@ export const createCustomer = async (req: express.Request, res: express.Response
 		res.status(400).json({ message: "All fields are required" });
 	else
 		try {
-			const result = await CustomersServices.createCustomer({
+			const result = await db_customers.createCustomer({
 				firstName,
 				lastName,
 				license,
@@ -91,7 +91,7 @@ export const createCustomerAndReciever = async (req: express.Request, res: expre
 		res.status(400).json({ message: "Customer and Reciever are required" });
 	else
 		try {
-			const result = await CustomersServices.createCustomerAndReciever(customer, reciever);
+			const result = await db_customers.createCustomerAndReciever(customer, reciever);
 			res.status(200).json(result);
 		} catch (e) {
 			res.status(400).json(e);
@@ -103,7 +103,7 @@ export const createManyCustomers = async (req: express.Request, res: express.Res
 	if (!customers) res.status(400).json({ message: "Customers are required" });
 	else
 		try {
-			const result = await CustomersServices.createManyCustomers(customers);
+			const result = await db_customers.createManyCustomers(customers);
 			res.status(200).json(result);
 		} catch (e) {
 			res.status(400).json(e);
@@ -114,7 +114,7 @@ export const deleteCustomer = async (req: express.Request, res: express.Response
 	const { id } = req.params;
 	if (!id) res.status(400).json({ message: "Customer id is required" });
 	try {
-		const result = await CustomersServices.deleteCustomer(Number(id));
+		const result = await db_customers.deleteCustomer(Number(id));
 		if (!result) res.status(404).json({ message: `Customer with id ${id} not found ` });
 		else res.status(200).json(result);
 	} catch (e) {

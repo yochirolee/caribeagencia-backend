@@ -37,7 +37,22 @@ const getServicesByAgencyId = async (agencyId: number) => {
 	}
 };
 
+const createService = async (data: any) => {
+	try {
+		const result = await prisma.services.create({
+			data
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
+		}
+		throw e;
+	}
+};
+
 module.exports = {
 	getAllServices,
 	getServicesByAgencyId,
+	createService,
 };

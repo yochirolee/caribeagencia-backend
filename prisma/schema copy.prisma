@@ -1,0 +1,235 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Declaración de modelos
+model Products {
+  id          Int                       @id @default(autoincrement())
+  hbl         String                    @unique
+  invoiceId   Int 
+  palletId    Int ?
+  dispatchId  Int ?
+  categoryId  Int ?
+  containerId Int ?
+  name        String
+  price       Float @default(0)
+  inventory   Int @default(0)
+  weight      Float @default(0)
+  type        Int @default(0)
+  pallet      Pallets?                  @relation(fields: [palletId], references: [id])
+  invoice     Invoices?                 @relation(fields: [invoiceId], references: [id])
+  location    ProductsLocationHistory[]
+  category    ProductsCategories?       @relation(fields: [categoryId], references: [id])
+  dispatch    Dispatches?               @relation(fields: [dispatchId], references: [id])
+  container   Containers?               @relation(fields: [containerId], references: [id])
+}
+
+
+model Invoices {
+  id             Int        @id @default(autoincrement())
+  invoiceNumber  Int        @unique  @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime?  @updatedAt
+  customerId     Int
+  recieverId     Int
+  employeeId     Int
+  totalWeight    Float
+  totalAmount    Float
+  discount       Float
+  deliveryAmount Float
+  agencyId       Int
+  products       Products[]
+  agency         Agencies   @relation(fields: [agencyId], references: [id])
+  employee       Employees  @relation(fields: [employeeId], references: [id])
+  customer       Customers  @relation(fields: [customerId], references: [id])
+  reciever       Recievers  @relation(fields: [recieverId], references: [id])
+  
+}
+
+
+
+model ProductsLocationHistory {
+  id        Int      @id @default(autoincrement())
+  location  String
+  date      DateTime
+  product   Products @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Employees {
+  id       Int        @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  email    String     @unique
+  address  String
+  phone    String?
+  mobile   String
+  invoices Invoices[]
+  agencyId Int
+  agency   Agencies   @relation(fields: [agencyId], references: [id])
+}
+
+model Customers {
+  id        Int         @id @default(autoincrement())
+  firstName String
+  lastName  String
+  license   String?     @unique
+  passport  String?     @unique
+  email     String      @unique
+  address   String
+  countryId Int
+  stateId   Int
+  cityId    Int
+  phone     String?
+  mobile    String      @unique
+  invoices  Invoices[]
+  recievers Recievers[]
+  agencyId  Int
+  agency    Agencies    @relation(fields: [agencyId], references: [id])
+  state    States      @relation(fields: [stateId], references: [id])
+  city     Cities      @relation(fields: [cityId], references: [id])
+  @@index(fields: [firstName,lastName,email,mobile])
+}
+
+model Recievers {
+  id         Int        @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  ci         String     @unique
+  passport   String?
+  email      String     @unique
+  address    String
+  phone      String?
+  mobile     String     @unique
+  customers Customers[]
+  invoices   Invoices[]
+  agencyId   Int
+  agency     Agencies   @relation(fields: [agencyId], references: [id])
+  countryId  Int?
+  country    Countries? @relation(fields: [countryId], references: [id])
+  stateId    Int?
+  state      States?    @relation(fields: [stateId], references: [id])
+  cityId     Int?
+  city       Cities?    @relation(fields: [cityId], references: [id])
+}
+
+model States {
+  id        Int         @id @default(autoincrement())
+  name      String
+  countryId Int
+  country   Countries   @relation(fields: [countryId], references: [id])
+  cities    Cities[]
+  Recievers Recievers[]
+  Customers Customers[]
+}
+
+model Cities {
+  id         Int         @id @default(autoincrement())
+  name       String
+  stateId    Int
+  postalCode Int
+  state      States      @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  Recievers  Recievers[]
+  Customers  Customers[]
+
+}
+
+model Countries {
+  id        Int         @id @default(autoincrement())
+  name      String
+  states    States[]
+  Recievers Recievers[]
+}
+
+
+
+model Pallets {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  products    Products[]
+} 
+
+model Agencies {
+  id          Int         @id @default(autoincrement())
+  parentId    Int?        @default(0)
+  name        String
+  address     String  ?
+  owner       String  ?
+  description String  ?
+  email       String  ?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime?   @updatedAt
+  phone       String?
+
+  employees   Employees[]
+  invoices    Invoices[]
+  customers   Customers[]
+  recievers   Recievers[]
+  services    Services[]
+}
+
+model Services {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  providerName String
+  providerPhone       String
+  providerAddress     String
+  providerEmail      String
+  type        ServiceType @default(Maritimo)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  agencyId    Int
+  agency      Agencies   @relation(fields: [agencyId], references: [id])
+  ProductsCategories ProductsCategories[]
+}
+
+model ProductsCategories {
+  id                Int        @id @default(autoincrement())
+  name              String
+  poundBuyPrice    Float      @default(0)
+  poundSalePrice   Float      @default(0)
+  unitBuyPrice      Float      @default(0)
+  unitSalePrice     Float      @default(0)
+  minWeight         Float      @default(0)
+  maxWeight         Float      @default(0)
+  isSellByPounds      Boolean    @default(true)
+  serviceId        Int
+  service          Services   @relation(fields: [serviceId], references: [id])
+  products Products[]
+}
+
+enum ServiceType {
+  Aereo
+  Maritimo
+  Mulas
+  
+}
+
+model Dispatches {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  products    Products[]
+}
+
+model Containers {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  name        String
+  description String
+  products    Products[]
+}
