@@ -1,5 +1,5 @@
 import express from "express";
-const db_agencies = require("../database/db_agencies");
+const db_agencies = require("../Database/db_agencies");
 
 export const getAllAgencies = async (req: express.Request, res: express.Response) => {
 	try {

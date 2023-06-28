@@ -1,5 +1,5 @@
 import express from "express";
-const db_services = require("../database/db_services");
+const db_services = require("../Database/db_services");
 
 export const getAllServices = async (req: express.Request, res: express.Response) => {
 	try {
