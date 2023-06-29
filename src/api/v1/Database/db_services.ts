@@ -5,7 +5,7 @@ const getAllServices = async () => {
 	try {
 		const result = await prisma.services.findMany({
 			include: {
-				ProductsCategories: true,
+				ServicesPrices: true,
 			},
 		});
 		return result;
@@ -25,7 +25,7 @@ const getServicesByAgencyId = async (agencyId: number) => {
 				agencyId: agencyId,
 			},
 			include: {
-				ProductsCategories: true,
+				ServicesPrices: true,
 			},
 		});
 		return result;
@@ -40,7 +40,7 @@ const getServicesByAgencyId = async (agencyId: number) => {
 const createService = async (data: any) => {
 	try {
 		const result = await prisma.services.create({
-			data
+			data,
 		});
 		return result;
 	} catch (e) {
