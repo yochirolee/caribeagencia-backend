@@ -18,7 +18,6 @@ model Products {
   invoiceId   Int 
   palletId    Int ?
   dispatchId  Int ?
-  categoryId  Int ?
   containerId Int ?
   name        String
   price       Float @default(0)
@@ -28,9 +27,11 @@ model Products {
   pallet      Pallets?                  @relation(fields: [palletId], references: [id])
   invoice     Invoices?                 @relation(fields: [invoiceId], references: [id])
   location    ProductsLocationHistory[]
-  category    ProductsCategories?       @relation(fields: [categoryId], references: [id])
   dispatch    Dispatches?               @relation(fields: [dispatchId], references: [id])
   container   Containers?               @relation(fields: [containerId], references: [id])
+ 
+  @@index([hbl])
+
 }
 
 
@@ -186,28 +187,29 @@ model Services {
   providerPhone       String
   providerAddress     String
   providerEmail      String
-  type        ServiceType @default(Maritimo)
+  isActive   Boolean    @default(true)
+  serviceType        ServiceType @default(Maritimo)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime?  @updatedAt
   agencyId    Int
   agency      Agencies   @relation(fields: [agencyId], references: [id])
-  ProductsCategories ProductsCategories[]
+  ServicesPrices ServicesPrices[]
 }
 
-model ProductsCategories {
-  id                Int        @id @default(autoincrement())
-  name              String
-  poundBuyPrice    Float      @default(0)
-  poundSalePrice   Float      @default(0)
-  unitBuyPrice      Float      @default(0)
-  unitSalePrice     Float      @default(0)
-  minWeight         Float      @default(0)
-  maxWeight         Float      @default(0)
-  isSellByPounds      Boolean    @default(true)
-  serviceId        Int
-  service          Services   @relation(fields: [serviceId], references: [id])
-  products Products[]
+model ServicesPrices {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  buyPrice       Float  @default(0)
+  sellPrice      Float @default(0)
+  isPricePerPound Boolean @default(true)
+  serviceId   Int
+  service     Services   @relation(fields: [serviceId], references: [id])
 }
+
+
+
+
 
 enum ServiceType {
   Aereo

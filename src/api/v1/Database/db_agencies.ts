@@ -67,6 +67,7 @@ const createAgency = async (data: any) => {
 };
 
 const updateAgency = async (id: number, data: any) => {
+	console.log(data,id)
 	try {
 		const result = await prisma.agencies.update({
 			where: {

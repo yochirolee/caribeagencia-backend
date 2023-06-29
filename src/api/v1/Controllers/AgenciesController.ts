@@ -58,6 +58,7 @@ export const createAgency = async (req: express.Request, res: express.Response) 
 export const updateAgency = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
 	const { name, address, email, owner, phone, description } = req.body;
+	console.log(id, req.body);
 	if (!id) res.status(400).json({ message: "Agency id is required" });
 	if (!name || !address || !owner) res.status(400).json({ message: "All fields are required" });
 	else
