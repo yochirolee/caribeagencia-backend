@@ -30,7 +30,7 @@ export const createService = async (req: express.Request, res: express.Response)
 		providerPhone,
 		providerAddress,
 		providerEmail,
-		type,
+		serviceType,
 		agencyId,
 	} = req.body;
 	if (
@@ -40,7 +40,7 @@ export const createService = async (req: express.Request, res: express.Response)
 		!providerPhone ||
 		!providerAddress ||
 		!providerEmail ||
-		!type ||
+		!serviceType ||
 		!agencyId
 	)
 		res.status(400).json({ message: "All fields are required" });
@@ -53,7 +53,7 @@ export const createService = async (req: express.Request, res: express.Response)
 				providerPhone,
 				providerAddress,
 				providerEmail,
-				type,
+				serviceType,
 				agencyId,
 			});
 			res.status(200).json(result);

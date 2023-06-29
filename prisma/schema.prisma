@@ -193,7 +193,7 @@ model Services {
   updatedAt   DateTime?  @updatedAt
   agencyId    Int
   agency      Agencies   @relation(fields: [agencyId], references: [id])
-  ServicesPrices ServicesPrices[]
+  ServicesPrices ServicesPrices[] 
 }
 
 model ServicesPrices {
