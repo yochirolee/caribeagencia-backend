@@ -20,7 +20,6 @@ const getEmployeesByAgencyId = async (agencyId: number) => {
 				agencyId: agencyId,
 			},
 			include: {
-				agency: true,
 				role: true,
 			},
 		});
@@ -93,7 +92,6 @@ const getEmployeeByEmail = async (email: string) => {
 				email: email,
 			},
 			include: {
-				agency: true,
 				role: true,
 			},
 		});
