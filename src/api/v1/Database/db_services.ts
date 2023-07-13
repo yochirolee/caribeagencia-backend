@@ -3,11 +3,7 @@ import prisma from "../../../lib/prisma";
 
 const getAllServices = async () => {
 	try {
-		const result = await prisma.services.findMany({
-			include: {
-				ServicesPrices: true,
-			},
-		});
+		const result = await prisma.services.findMany();
 		return result;
 	} catch (e) {
 		console.log(e, "error");
@@ -19,15 +15,18 @@ const getAllServices = async () => {
 };
 
 const getServicesByAgencyId = async (agencyId: number) => {
+	console.log(agencyId);
 	try {
 		const result = await prisma.services.findMany({
-			where: {
-				agencyId: agencyId,
-			},
 			include: {
-				ServicesPrices: true,
+				servicesPrices: {
+					where: {
+						agencyId: agencyId,
+					},
+				},
 			},
 		});
+		console.log(result);
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -50,9 +49,26 @@ const createService = async (data: any) => {
 		throw e;
 	}
 };
+const updateService = async (id: number, data: any) => {
+	try {
+		const result = await prisma.services.update({
+			where: {
+				id: id,
+			},
+			data,
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
+		}
+		throw e;
+	}
+};
 
 module.exports = {
 	getAllServices,
 	getServicesByAgencyId,
 	createService,
+	updateService,
 };

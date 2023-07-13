@@ -1,18 +1,19 @@
 import express from "express";
 const db_services = require("../Database/db_services");
 
-export const getAllServices = async (req: express.Request, res: express.Response) => {
+const getAllServices = async (req: express.Request, res: express.Response) => {
 	try {
 		const result = await db_services.getAllServices();
-		res.status(200).json(result);
-	} catch (e) {
-		res.status(400).json(e);
+		res.send({ status: 200, data: result });
+	} catch (error) {
+		res.status(500).send({ status: "Failed", data: { error } });
 	}
 };
 
-export const getServicesByAgencyId = async (req: express.Request, res: express.Response) => {
+const getServicesByAgencyId = async (req: express.Request, res: express.Response) => {
+	console.log(req.params);
 	const { id } = req.params;
-	if (!id) res.status(400).json({ message: "Agency id is required" });
+	if (!id) res.status(400).send({ status: "Failed", data: "Agency id is required" });
 	try {
 		const result = await db_services.getServicesByAgencyId(Number(id));
 		if (!result) res.status(404).json({ message: `Agency with id ${id} not found ` });
@@ -22,43 +23,50 @@ export const getServicesByAgencyId = async (req: express.Request, res: express.R
 	}
 };
 
-export const createService = async (req: express.Request, res: express.Response) => {
-	const {
-		name,
-		description,
-		providerName,
-		providerPhone,
-		providerAddress,
-		providerEmail,
-		serviceType,
-		agencyId,
-	} = req.body;
-	if (
-		!name ||
-		!description ||
-		!providerName ||
-		!providerPhone ||
-		!providerAddress ||
-		!providerEmail ||
-		!serviceType ||
-		!agencyId
-	)
+const createService = async (req: express.Request, res: express.Response) => {
+	const { name, description, serviceType, providerId, invoiceCode } = req.body;
+	if (!name || !description || !providerId || !invoiceCode || !serviceType)
 		res.status(400).json({ message: "All fields are required" });
 	else
 		try {
 			const result = await db_services.createService({
 				name,
 				description,
-				providerName,
-				providerPhone,
-				providerAddress,
-				providerEmail,
 				serviceType,
-				agencyId,
+				providerId,
+				invoiceCode,
 			});
 			res.status(200).json(result);
 		} catch (e) {
 			console.log(e, "error");
 			res.status(400).json(e);
 		}
+};
+
+const updateService = async (req: express.Request, res: express.Response) => {
+	const { id } = req.params;
+	const { name, description, serviceType, providerId, invoiceCode } = req.body;
+	if (!id) res.status(400).json({ message: "Service id is required" });
+	if (!name || !description || !providerId || !invoiceCode || !serviceType)
+		res.status(400).json({ message: "All fields are required" });
+	else
+		try {
+			const result = await db_services.updateService(Number(id), {
+				name,
+				description,
+				serviceType,
+				providerId,
+				invoiceCode,
+			});
+			res.status(200).json(result);
+		} catch (e) {
+			res.status(400).json(e);
+		}
+};
+
+module.exports = {
+	getAllServices,
+	getServicesByAgencyId,
+	createService,
+	updateService,
 };

@@ -1,5 +1,5 @@
 export interface IEmployee {
-	id: number;
+	id: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -7,4 +7,5 @@ export interface IEmployee {
 	phone: string;
 	mobile: string;
 	agencyId:number;
+	roleId: number;
 }

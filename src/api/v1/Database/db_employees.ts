@@ -19,6 +19,10 @@ const getEmployeesByAgencyId = async (agencyId: number) => {
 			where: {
 				agencyId: agencyId,
 			},
+			include: {
+				agency: true,
+				role: true,
+			},
 		});
 		return result;
 	} catch (e) {
@@ -29,11 +33,15 @@ const getEmployeesByAgencyId = async (agencyId: number) => {
 	}
 };
 
-const getEmployeeById = async (id: number) => {
+const getEmployeeById = async (id: string) => {
 	try {
 		const result = await prisma.employees.findUnique({
 			where: {
 				id: id,
+			},
+			include: {
+				agency: true,
+				role: true,
 			},
 		});
 		return result;
@@ -78,6 +86,26 @@ const searchEmployees = async (search: string) => {
 	}
 };
 
+const getEmployeeByEmail = async (email: string) => {
+	try {
+		const result = await prisma.employees.findUnique({
+			where: {
+				email: email,
+			},
+			include: {
+				agency: true,
+				role: true,
+			},
+		});
+		return result;
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
+		}
+		throw e;
+	}
+};
+
 const createEmployee = async (data: IEmployee) => {
 	try {
 		const result = await prisma.employees.create({ data });
@@ -89,7 +117,7 @@ const createEmployee = async (data: IEmployee) => {
 	}
 };
 
-const updateEmployee = async (id: number, data: IEmployee) => {
+const updateEmployee = async (id: string, data: IEmployee) => {
 	try {
 		const result = await prisma.employees.update({
 			where: {
@@ -105,7 +133,7 @@ const updateEmployee = async (id: number, data: IEmployee) => {
 		throw e;
 	}
 };
-const deleteEmployee = async (id: number) => {
+const deleteEmployee = async (id: string) => {
 	try {
 		const result = await prisma.employees.delete({
 			where: {
@@ -127,6 +155,7 @@ module.exports = {
 	deleteEmployee,
 	getEmployeesByAgencyId,
 	updateEmployee,
+	getEmployeeByEmail,
 };
 
 // Compare this snippet from src\api\v1\Services\EmployeessServices.ts:

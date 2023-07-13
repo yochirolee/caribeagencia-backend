@@ -12,6 +12,18 @@ datasource db {
 }
 
 // Declaración de modelos
+
+
+model Roles {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  description String
+  employees    Employees[]
+}
+
+
+
+
 model Products {
   id          Int                       @id @default(autoincrement())
   hbl         String                    @unique
@@ -42,7 +54,7 @@ model Invoices {
   updatedAt      DateTime?  @updatedAt
   customerId     Int
   recieverId     Int
-  employeeId     Int
+  employeeId     String
   totalWeight    Float
   totalAmount    Float
   discount       Float
@@ -67,7 +79,7 @@ model ProductsLocationHistory {
 }
 
 model Employees {
-  id       Int        @id @default(autoincrement())
+  id       String @unique @id
   firstName     String
   lastName      String
   email    String     @unique
@@ -77,6 +89,8 @@ model Employees {
   invoices Invoices[]
   agencyId Int
   agency   Agencies   @relation(fields: [agencyId], references: [id])
+  role    Roles      @relation(fields: [roleId], references: [id])
+  roleId  Int
 }
 
 model Customers {
@@ -176,24 +190,33 @@ model Agencies {
   invoices    Invoices[]
   customers   Customers[]
   recievers   Recievers[]
-  services    Services[]
+  servicesPrices    ServicesPrices[]
+}
+
+
+model ServicesProviders {
+  id                  Int        @id @default(autoincrement())
+  providerName        String
+  providerPhone       String
+  providerAddress     String
+  providerEmail       String
+  logoUrl             String?
+  services           Services[] 
+
 }
 
 model Services {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  providerName String
-  providerPhone       String
-  providerAddress     String
-  providerEmail      String
+  invoiceCode String   
   isActive   Boolean    @default(true)
   serviceType        ServiceType @default(Maritimo)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime?  @updatedAt
-  agencyId    Int
-  agency      Agencies   @relation(fields: [agencyId], references: [id])
-  ServicesPrices ServicesPrices[] 
+  providerId Int
+  provider   ServicesProviders @relation(fields: [providerId], references: [id])
+  servicesPrices ServicesPrices[] 
 }
 
 model ServicesPrices {
@@ -202,9 +225,11 @@ model ServicesPrices {
   description String
   buyPrice       Float  @default(0)
   sellPrice      Float @default(0)
-  isPricePerPound Boolean @default(true)
+  isSellByPounds Boolean @default(true)
   serviceId   Int
   service     Services   @relation(fields: [serviceId], references: [id])
+  agencyId    Int
+  agency      Agencies   @relation(fields: [agencyId], references: [id])
 }
 
 
