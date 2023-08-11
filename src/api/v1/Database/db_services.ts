@@ -1,7 +1,6 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../../lib/prisma";
 
-
 const getAllServices = async () => {
 	try {
 		const result = await prisma.services.findMany({
@@ -32,7 +31,7 @@ const getServicesByAgencyId = async (agencyId: number) => {
 				servicesCategories: true,
 			},
 		});
-		console.log(result);
+		
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -65,7 +64,7 @@ const createService = async (data: any, categoriesIds: Number[]) => {
 	}
 };
 const updateService = async (id: number, data: any) => {
-	console.log(id, data,"updating")
+	console.log(id, data, "updating");
 	try {
 		const result = await prisma.services.update({
 			where: {
