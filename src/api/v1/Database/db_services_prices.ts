@@ -31,6 +31,20 @@ const getServicesPricesByAgencyId = async (agencyId: number) => {
 	}
 };
 
+const getServicePricesByParams = async (params: {}) => {
+	console.log(params);
+	try {
+		const result = await prisma.servicesPrices.findMany({ where: { ...params } });
+		return result;
+	} catch (e) {
+		console.log(e, "error");
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			throw e;
+		}
+		throw e;
+	}
+};
+
 const updateServicePrice = async (id: number, data: any) => {
 	try {
 		const result = await prisma.servicesPrices.update({
@@ -67,7 +81,6 @@ const deleteServicePrice = async (id: number) => {
 };
 
 const createServicePrices = async (data: any) => {
-	console.log(data, "data");
 	try {
 		const result = await prisma.servicesPrices.create({
 			data,
@@ -84,6 +97,7 @@ const createServicePrices = async (data: any) => {
 module.exports = {
 	getAllServicesPrices,
 	getServicesPricesByAgencyId,
+	getServicePricesByParams,
 	createServicePrices,
 	updateServicePrice,
 	deleteServicePrice,

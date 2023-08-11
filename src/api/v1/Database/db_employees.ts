@@ -21,6 +21,7 @@ const getEmployeesByAgencyId = async (agencyId: number) => {
 			},
 			include: {
 				role: true,
+				agency: true,
 			},
 		});
 		return result;

@@ -6,6 +6,7 @@ import ServicesRoutes from "./ServicesRoutes";
 import ServicesProvidersRoutes from "./ServicesProvidersRoutes";
 import ServicesPricesRoutes from "./ServicesPricesRoutes";
 import RolesRoutes from "./RolesRoutes";
+import ProductsCategoriesRoutes from "./ProductsCategoriesRoutes";
 
 export {
 	AgenciesRoutes,
@@ -16,4 +17,5 @@ export {
 	ServicesRoutes,
 	ServicesProvidersRoutes,
 	RolesRoutes,
+	ProductsCategoriesRoutes,
 };

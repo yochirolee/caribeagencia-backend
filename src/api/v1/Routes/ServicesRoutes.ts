@@ -5,5 +5,6 @@ router.get("/", servicesController.getAllServices);
 router.get("/getByAgencyId/:id", servicesController.getServicesByAgencyId);
 router.post("/", servicesController.createService);
 router.put("/:id", servicesController.updateService);
+router.delete("/:id", servicesController.deleteService);
 
 export default router;

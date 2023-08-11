@@ -3,6 +3,7 @@ import {
 	AgenciesRoutes,
 	CustomersRoutes,
 	EmployeesRoutes,
+	ProductsCategoriesRoutes,
 	RecieversRoutes,
 	RolesRoutes,
 	ServicesPricesRoutes,
@@ -11,13 +12,9 @@ import {
 } from "./Routes";
 const router = express.Router();
 
-import clerk from "@clerk/clerk-sdk-node";
 
 router.get("/", async (req, res) => {
-	const userList = await clerk.users.getUserList();
-	const sessionList = await clerk.sessions.getSessionList();
-
-	res.json({ message: "Caribe Travel Express API - V1 👋🌎🌍🌏", userList, sessionList });
+	res.json({ message: "CTEnvios API - V1, contact: yleecruz@gmail.com 👋🌎🌍🌏" });
 });
 router.use("/customers", CustomersRoutes);
 router.use("/agencies", AgenciesRoutes);
@@ -27,5 +24,6 @@ router.use("/services", ServicesRoutes);
 router.use("/servicesProviders", ServicesProvidersRoutes);
 router.use("/servicesPrices", ServicesPricesRoutes);
 router.use("/roles", RolesRoutes);
+router.use("/productsCategories", ProductsCategoriesRoutes);
 
 export default router;
