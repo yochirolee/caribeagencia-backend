@@ -103,17 +103,12 @@ model Customers {
   passport  String?     @unique
   email     String      @unique
   address   String
-  countryId Int
-  stateId   Int
-  cityId    Int
   phone     String?
   mobile    String      @unique
   invoices  Invoices[]
   recievers Recievers[]
   agencyId  Int
   agency    Agencies    @relation(fields: [agencyId], references: [id])
-  state     States      @relation(fields: [stateId], references: [id])
-  city      Cities      @relation(fields: [cityId], references: [id])
 
   @@index(fields: [firstName, lastName, email, mobile])
 }
@@ -256,4 +251,26 @@ model Containers {
   name        String
   description String
   products    Products[]
+}
+
+
+model Package {
+  id             Int      @id @default(autoincrement())
+  hbl String   @unique
+  description    String
+  weight         Float
+  price          Float
+  status         String
+  location       String
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+  history        PackageHistory[]
+}
+
+model PackageHistory {
+  id        Int      @id @default(autoincrement())
+  package   Package  @relation(fields: [packageId], references: [id])
+  packageId Int
+  status    String
+  createdAt DateTime @default(now())
 }

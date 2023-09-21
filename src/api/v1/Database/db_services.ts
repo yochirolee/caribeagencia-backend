@@ -11,7 +11,6 @@ const getAllServices = async () => {
 		});
 		return result;
 	} catch (e) {
-		console.log(e, "error");
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			throw e;
 		}
@@ -25,7 +24,7 @@ const getServicesByAgencyId = async (agencyId: number) => {
 			include: {
 				servicesPrices: {
 					where: {
-						agencyId: agencyId,
+						agencyId: agencyId
 					},
 				},
 				servicesCategories: true,

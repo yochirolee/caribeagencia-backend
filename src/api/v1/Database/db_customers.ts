@@ -89,6 +89,7 @@ const createCustomer = async (data: ICustomer) => {
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			console.log(e)
 			throw e;
 		}
 		throw e;
