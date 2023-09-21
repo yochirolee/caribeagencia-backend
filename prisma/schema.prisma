@@ -142,7 +142,6 @@ model States {
   country   Countries   @relation(fields: [countryId], references: [id])
   cities    Cities[]
   Recievers Recievers[]
-  Customers Customers[]
 }
 
 model Cities {
@@ -152,7 +151,6 @@ model Cities {
   postalCode Int
   state      States      @relation(fields: [stateId], references: [id], onDelete: Cascade)
   Recievers  Recievers[]
-  Customers  Customers[]
 }
 
 model Countries {

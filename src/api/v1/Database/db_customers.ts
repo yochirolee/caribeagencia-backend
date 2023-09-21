@@ -41,8 +41,6 @@ const getCustomerById = async (id: number) => {
 	}
 };
 
-
-
 const searchCustomers = async (search: string) => {
 	try {
 		const result = await prisma.customers.findMany({
@@ -89,7 +87,7 @@ const createCustomer = async (data: ICustomer) => {
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-			console.log(e)
+			console.log(e);
 			throw e;
 		}
 		throw e;

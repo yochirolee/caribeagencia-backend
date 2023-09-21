@@ -59,7 +59,6 @@ export const createCustomer = async (req: express.Request, res: express.Response
 		});
 		res.status(200).json(result);
 	} catch (e) {
-		console.log(e)
 		res.status(400).json(e);
 	}
 };
