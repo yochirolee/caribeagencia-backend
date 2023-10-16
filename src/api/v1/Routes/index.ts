@@ -20,7 +20,6 @@ export {
 	EmployeesRoutes,
 	ServicesRoutes,
 	ServicesProvidersRoutes,
-	RolesRoutes,
 	StatesRoutes,
 	InvoicesRoutes,
 	PackagesRoutes,
