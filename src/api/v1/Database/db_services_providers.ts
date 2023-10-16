@@ -24,15 +24,7 @@ const getServicesProvidersByAgencyId = async (agencyId: number) => {
 	try {
 		const result = await prisma.servicesProviders.findMany({
 			include: {
-				services: {
-					include: {
-						servicesPrices: {
-							where: {
-								agencyId: agencyId,
-							},
-						},
-					},
-				},
+				services: {},
 			},
 		});
 		return result;

@@ -88,6 +88,7 @@ const createServicePrices = async (data: any) => {
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			console.log(e, "error");
 			throw e;
 		}
 		throw e;

@@ -35,6 +35,23 @@ const getServicePricesByParams = async (req: express.Request, res: express.Respo
 };
 
 const createServicePrice = async (req: express.Request, res: express.Response) => {
+	console.log(req.body);
+
+	const requiredFields = [
+		"name",
+		"description",
+		"costPrice",
+		"agencyPrice",
+		
+		"serviceId",
+		"agencyId",
+		"packageCategoryId",
+	];
+	const missingFields = requiredFields.filter((field) => !req.body[field]);
+	if (missingFields.length > 0) {
+		res.status(400).json({ message: `Missing required fields: ${missingFields.join(", ")}` });
+		return;
+	}
 	const {
 		name,
 		description,
@@ -42,39 +59,31 @@ const createServicePrice = async (req: express.Request, res: express.Response) =
 		agencyPrice,
 		publicPrice,
 		isSellByPounds,
+		weight,
 		serviceId,
 		agencyId,
-		productCategoryId,
+		packageCategoryId,
 	} = req.body;
 
-	if (
-		!name ||
-		!description ||
-		!costPrice ||
-		!agencyPrice ||
-		!serviceId ||
-		!agencyId ||
-		!productCategoryId
-	)
-		res.status(400).json({ message: "All fields are required" });
-	else
-		try {
-			const servicePrice = {
-				name,
-				description,
-				costPrice,
-				agencyPrice,
-				publicPrice,
-				isSellByPounds,
-				serviceId,
-				agencyId,
-				productCategoryId,
-			};
-			const result = await db_services_prices.createServicePrices(servicePrice);
-			res.status(200).json(result);
-		} catch (e) {
-			res.status(400).json(e);
-		}
+	try {
+		const servicePrice = {
+			name,
+			description,
+			costPrice,
+			agencyPrice,
+			publicPrice,
+			isSellByPounds,
+			serviceId,
+			agencyId,
+			weight,
+			packageCategoryId,
+		};
+		const result = await db_services_prices.createServicePrices(servicePrice);
+		res.status(200).json(result);
+	} catch (e) {
+		console.log(e);
+		res.status(400).json(e);
+	}
 };
 
 const updateServicePrice = async (req: express.Request, res: express.Response) => {
@@ -87,9 +96,10 @@ const updateServicePrice = async (req: express.Request, res: express.Response) =
 		agencyPrice,
 		publicPrice,
 		isSellByPounds,
+		weight,
 		serviceId,
 		agencyId,
-		productCategoryId,
+		packageCategoryId,
 	} = req.body;
 	if (
 		!name ||
@@ -98,7 +108,8 @@ const updateServicePrice = async (req: express.Request, res: express.Response) =
 		!agencyPrice ||
 		!serviceId ||
 		!agencyId ||
-		!productCategoryId
+		!publicPrice ||
+		!packageCategoryId
 	)
 		res.status(400).json({ message: "All fields are required" });
 	else
@@ -110,9 +121,10 @@ const updateServicePrice = async (req: express.Request, res: express.Response) =
 				agencyPrice,
 				publicPrice,
 				isSellByPounds,
+				weight,
 				serviceId,
 				agencyId,
-				productCategoryId,
+				packageCategoryId,
 			};
 			const result = await db_services_prices.updateServicePrice(Number(id), servicePrice);
 			res.status(200).json(result);

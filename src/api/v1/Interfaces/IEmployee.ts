@@ -6,6 +6,6 @@ export interface IEmployee {
 	address: string;
 	phone: string;
 	mobile: string;
-	agencyId:number;
+	agencyId: number;
 	roleId: number;
 }

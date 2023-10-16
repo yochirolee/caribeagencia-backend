@@ -35,7 +35,12 @@ export const searchRecievers = async (req: express.Request, res: express.Respons
 };
 
 export const createReciever = async (req: express.Request, res: express.Response) => {
-	console.log(req.body);
+	const requiredFields = ["firstName", "lastName", "address", "mobile", "agencyId"];
+	const missingFields = requiredFields.filter((field) => !req.body[field]);
+	if (missingFields.length > 0) {
+		res.status(400).json({ message: `Missing required fields: ${missingFields.join(", ")}` });
+		return;
+	}
 	const {
 		firstName,
 		lastName,
@@ -43,46 +48,89 @@ export const createReciever = async (req: express.Request, res: express.Response
 		passport,
 		email,
 		address,
-		countryId,
 		stateId,
 		cityId,
 		phone,
 		mobile,
 		agencyId,
 	} = req.body;
-	if (
-		!firstName ||
-		!lastName ||
-		!email ||
-		!ci ||
-		!address ||
-		!countryId ||
-		!stateId ||
-		!cityId ||
-		!mobile ||
-		!agencyId
-	)
-		res.status(400).json({ message: "All fields are required" });
-	else
-		try {
-			const result = await db_recievers.createReciever({
-				firstName,
-				lastName,
-				ci,
-				passport,
-				email,
-				address,
-				countryId,
-				stateId,
-				cityId,
-				phone,
-				mobile,
-				agencyId,
-			});
-			res.status(200).json(result);
-		} catch (e) {
-			res.status(400).json(e);
-		}
+
+	try {
+		const result = await db_recievers.createReciever({
+			firstName,
+			lastName,
+			ci,
+			passport,
+			email,
+			address,
+			stateId,
+			cityId,
+			phone,
+			mobile,
+			agencyId,
+		});
+		res.status(200).json(result);
+	} catch (e) {
+		res.status(400).json(e);
+	}
+};
+
+export const upsertReciever = async (req: express.Request, res: express.Response) => {
+	console.log("upserting Reciever");
+	const requiredFields = ["firstName", "lastName", "ci", "address", "mobile", "agencyId"];
+	const missingFields = requiredFields.filter((field) => !req.body[field]);
+	if (missingFields.length > 0) {
+		res.status(400).json({ message: `Missing required fields: ${missingFields.join(", ")}` });
+		return;
+	}
+	const {
+		firstName,
+		lastName,
+		ci,
+		passport,
+		email,
+		address,
+		stateId,
+		cityId,
+		phone,
+		mobile,
+		agencyId,
+	} = req.body;
+
+	try {
+		const result = await db_recievers.upsertReciever({
+			firstName,
+			lastName,
+			ci,
+			passport,
+			email,
+			address,
+			phone,
+			mobile,
+			stateId,
+			cityId,
+			agencyId,
+		});
+		res.status(200).json(result);
+	} catch (e) {
+		console.log(e, "error");
+		res.status(400).json(e);
+	}
+};
+
+export const connectRecieverToCustomer = async (req: express.Request, res: express.Response) => {
+	const { customerId, recieverId } = req.body;
+
+	if (!customerId && !recieverId)
+		res.status(400).json({ message: "Customer id and recieverId  are required" });
+
+	try {
+		const result = await db_recievers.connectRecieverToCustomer(customerId, recieverId);
+		res.status(200).json(result);
+	} catch (e) {
+		console.log(e);
+		res.status(400).json(e);
+	}
 };
 
 export const createManyRecievers = async (req: express.Request, res: express.Response) => {

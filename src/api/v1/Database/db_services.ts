@@ -6,7 +6,7 @@ const getAllServices = async () => {
 		const result = await prisma.services.findMany({
 			include: {
 				servicesPrices: true,
-				servicesCategories: true,
+				packagesCategories: true,
 			},
 		});
 		return result;
@@ -24,13 +24,13 @@ const getServicesByAgencyId = async (agencyId: number) => {
 			include: {
 				servicesPrices: {
 					where: {
-						agencyId: agencyId
+						agencyId: agencyId,
 					},
 				},
-				servicesCategories: true,
+				packagesCategories: true,
 			},
 		});
-		
+
 		return result;
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -41,14 +41,11 @@ const getServicesByAgencyId = async (agencyId: number) => {
 };
 
 const createService = async (data: any, categoriesIds: Number[]) => {
-	console.log(data, categoriesIds);
-
-	console.log(categoriesIds, "categoriesIds");
 	try {
 		const result = await prisma.services.create({
 			data: {
 				...data,
-				servicesCategories: {
+				packagesCategories: {
 					connect: categoriesIds.map((id) => ({ id: id })),
 				},
 			},
@@ -63,7 +60,6 @@ const createService = async (data: any, categoriesIds: Number[]) => {
 	}
 };
 const updateService = async (id: number, data: any) => {
-	console.log(id, data, "updating");
 	try {
 		const result = await prisma.services.update({
 			where: {

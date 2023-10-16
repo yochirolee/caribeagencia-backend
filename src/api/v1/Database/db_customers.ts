@@ -53,6 +53,12 @@ const searchCustomers = async (search: string) => {
 						},
 					},
 					{
+						lastName: {
+							contains: search,
+							mode: "insensitive",
+						},
+					},
+					{
 						email: {
 							contains: search,
 							mode: "insensitive",
@@ -67,7 +73,12 @@ const searchCustomers = async (search: string) => {
 				],
 			},
 			include: {
-				recievers: true,
+				recievers: {
+					include: {
+						state: true,
+						city: true,
+					},
+				},
 				invoices: true,
 				agency: true,
 			},
@@ -100,11 +111,11 @@ const createCustomerAndReciever = async (customer: ICustomer, reciever: IRecieve
 		if (!customer || !reciever) throw new Error("Customer or Reciever is not defined");
 
 		const customerResult = await prisma.customers.findUnique({
-			where: { mobile: customer.mobile },
+			where: { id: customer.id },
 		});
 
 		const recieverResult = await prisma.recievers.findUnique({
-			where: { mobile: reciever.mobile },
+			where: { ci: reciever?.ci },
 		});
 		//create a method using prisma to connect or create reciever
 
@@ -168,9 +179,10 @@ const createCustomerAndReciever = async (customer: ICustomer, reciever: IRecieve
 		}
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			console.log(e);
 			throw e;
 		}
-
+		console.log(e);
 		throw e;
 	}
 };

@@ -1,14 +1,13 @@
 import prisma from "../../../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { IReciever } from "../Interfaces/IReciever";
+import { ICustomer } from "../Interfaces/ICustomer";
 
 const getAllRecievers = async () => {
 	try {
-		const result = await prisma.recievers.findMany({});
+		const result = await prisma.recievers.findMany({ include: { state: true, city: true } });
 		return result;
 	} catch (e) {
-		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-		}
 		throw e;
 	}
 };
@@ -23,12 +22,12 @@ const getRecieverById = async (id: number) => {
 				customers: true,
 				invoices: true,
 				agency: true,
+				state: true,
+				city: true,
 			},
 		});
 		return result;
 	} catch (e) {
-		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-		}
 		throw e;
 	}
 };
@@ -40,6 +39,12 @@ const searchRecievers = async (search: string) => {
 				OR: [
 					{
 						firstName: {
+							contains: search,
+							mode: "insensitive",
+						},
+					},
+					{
+						ci: {
 							contains: search,
 							mode: "insensitive",
 						},
@@ -59,9 +64,36 @@ const searchRecievers = async (search: string) => {
 				],
 			},
 			include: {
-				customers: true,
-				invoices: true,
-				agency: true,
+				state: true,
+				city: true,
+			},
+		});
+		return result;
+	} catch (e) {
+		throw e;
+	}
+};
+
+const createReciever = async (data: IReciever) => {
+	try {
+		const result = await prisma.recievers.create({ data, include: { state: true, city: true } });
+		return result;
+	} catch (e) {
+		throw e;
+	}
+};
+
+const upsertReciever = async (data: IReciever) => {
+	try {
+		const result = await prisma.recievers.upsert({
+			where: {
+				ci: data.ci,
+			},
+			update: data,
+			create: data,
+			include: {
+				state: true,
+				city: true,
 			},
 		});
 		return result;
@@ -72,13 +104,23 @@ const searchRecievers = async (search: string) => {
 	}
 };
 
-const createReciever = async (data: IReciever) => {
+export const connectRecieverToCustomer = async (customerId: number, recieverId: number) => {
 	try {
-		const result = await prisma.recievers.create({ data });
+		const result = await prisma.recievers.update({
+			where: {
+				id: recieverId,
+			},
+			data: {
+				customers: {
+					connect: {
+						id: customerId,
+					},
+				},
+			},
+		});
+
 		return result;
 	} catch (e) {
-		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-		}
 		throw e;
 	}
 };
@@ -113,8 +155,10 @@ module.exports = {
 	getRecieverById,
 	searchRecievers,
 	createReciever,
+	upsertReciever,
 	deleteReciever,
 	createManyRecievers,
+	connectRecieverToCustomer,
 };
 
 // Compare this snippet from src\api\v1\Services\RecieverssServices.ts:

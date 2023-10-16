@@ -35,7 +35,6 @@ export const searchCustomers = async (req: express.Request, res: express.Respons
 };
 
 export const createCustomer = async (req: express.Request, res: express.Response) => {
-	console.log(req.body, "createCustomer");
 	const requiredFields = ["firstName", "lastName", "email", "mobile", "agencyId"];
 	const missingFields = requiredFields.filter((field) => !req.body[field]);
 	if (missingFields.length > 0) {

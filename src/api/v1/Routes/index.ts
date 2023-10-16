@@ -6,7 +6,11 @@ import ServicesRoutes from "./ServicesRoutes";
 import ServicesProvidersRoutes from "./ServicesProvidersRoutes";
 import ServicesPricesRoutes from "./ServicesPricesRoutes";
 import RolesRoutes from "./RolesRoutes";
-import ProductsCategoriesRoutes from "./ProductsCategoriesRoutes";
+import StatesRoutes from "./StatesRoutes";
+import PackagesRoutes from "./PackagesRoutes";
+import InvoicesRoutes from "./InvoicesRoutes";
+import PackagesCategoriesRoutes from "./PackagesCategoriesRoutes";
+import PaymentMethodsRoutes from "./PaymentsMethodsRoutes";
 
 export {
 	AgenciesRoutes,
@@ -17,5 +21,9 @@ export {
 	ServicesRoutes,
 	ServicesProvidersRoutes,
 	RolesRoutes,
-	ProductsCategoriesRoutes,
+	StatesRoutes,
+	InvoicesRoutes,
+	PackagesRoutes,
+	PackagesCategoriesRoutes,
+	PaymentMethodsRoutes,
 };
